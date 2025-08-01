@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://b1wr4ftmwllls"]
+
+[ext_resource type="Script" uid="uid://cesyyearuoiy" path="res://scripts/web_link.gd" id="1_86rd5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qfhkl"]
+size = Vector2(20, 5)
+
+[node name="WebLink" type="RigidBody2D"]
+script = ExtResource("1_86rd5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_qfhkl")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0.136826, 0.136826, 0.136826, 1)
+polygon = PackedVector2Array(-10, 2.5, 10, 2.5, 10, -2.5, -10, -2.5)
