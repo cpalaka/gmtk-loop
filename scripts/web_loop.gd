@@ -14,6 +14,9 @@ func _init(node: Node2D):
 	player = node.get_node("Player")
 
 func create_link():
+	var movement_vector = player.velocity
+	var player_position = player.position
+
 	var new_link = web_link_scene.instantiate()
 
 	var link_collision_shape = new_link.get_node("CollisionShape2D") as CollisionShape2D
@@ -24,25 +27,24 @@ func create_link():
 
 	var new_link_distance = (player_height + link_length) / 2;
 	
-	var movement_vector = player.velocity
-	var player_position = player.position
-	
-	new_link.position = player_position.move_toward(player_position + movement_vector, -new_link_distance)
-	new_link.rotation = movement_vector.angle()
+	if link_group.size() > 0:
+		#todo: position new link according to previous link
+		var prev_link = link_group.back()
+		
+		var prev_link_end = prev_link.position.move_toward(player_position, link_length/2)
+		new_link.position = prev_link_end.move_toward(player_position, link_length/2)
+		new_link.look_at(player.position)
+		# new_link.rotate(PI)
+	else:
+		new_link.position = player_position.move_toward(player_position + movement_vector, -new_link_distance)
+		new_link.rotation = movement_vector.angle()
+	# new_link.position = player_position.move_toward(player_position + movement_vector, -new_link_distance)
+	# new_link.rotation = movement_vector.angle()
+
 	#tune this
 	new_link.linear_damp = 1.0
 	
 	parentNode.add_child(new_link)
-
-
-	# testing vector math with lines
-	# var test_line = Line2D.new()
-	# test_line.width = 2.0
-	# test_line.add_point(player_position)
-	# test_line.add_point(
-	# 	player_position.move_toward(player_position + movement_vector, -link_length)
-	# )
-	# parentNode.add_child(test_line)
 
 	if link_group.size() > 0:
 		var new_joint = PinJoint2D.new()
@@ -53,7 +55,8 @@ func create_link():
 		var prev_link = link_group.back()
 		#position joint at the intersection of the 2 links, whatever their orientation
 		#TODO: fix this w better vector math
-		new_joint.position = player_position.move_toward(player_position + movement_vector, -(new_link_distance + link_length/2))
+		var prev_link_end = prev_link.position.move_toward(player_position, link_length/2)
+		new_joint.position = prev_link_end
 
 		new_joint.node_a = prev_link.get_path()
 		new_joint.node_b = new_link.get_path()

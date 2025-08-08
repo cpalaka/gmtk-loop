@@ -6,6 +6,7 @@ var indicator := preload("res://scenes/indicator.tscn")
 ## game fps
 @export var GAME_FPS: float = 60.0
 @onready var player = $Player
+@onready var camera = $Camera2D
 
 
 var delta_counter := 0.0
@@ -13,18 +14,20 @@ var delta_counter := 0.0
 var loops: Dictionary[int, WebLoop] = {}
 
 func _ready() -> void:
+	# Input.mouse_mode = Input.MOUSE_MODE_CONFINED
 	player.create_web_link.connect(_create_web_link)
 
 func _create_web_link(id: int):
-	# var loop = WebLoop.new(self)
 	if loops.has(id):
 		loops[id].create_link()
 	else:
+		print('CREATING NEW LOOP')
 		var new_loop = WebLoop.new(self)
 		loops[id] = new_loop
 
 func _process(delta: float) -> void:
 	# print('loops', loops)
+	
 	fps_limited_process(delta)
 
 func fps_limited_process(delta: float) -> void:

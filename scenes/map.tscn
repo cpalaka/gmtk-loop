@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cocnpw3g7gupt"]
+[gd_scene load_steps=5 format=3 uid="uid://cocnpw3g7gupt"]
 
 [ext_resource type="PackedScene" uid="uid://ejeed8bsoeym" path="res://scenes/player.tscn" id="1_c7s6e"]
 [ext_resource type="Script" uid="uid://dtqiqmq8ainf7" path="res://scripts/map.gd" id="1_wijl4"]
+[ext_resource type="Script" uid="uid://dplbjs12cl04v" path="res://scripts/camera.gd" id="2_gldc4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wijl4"]
 size = Vector2(600, 59)
@@ -9,11 +10,18 @@ size = Vector2(600, 59)
 [node name="Map" type="Node2D"]
 script = ExtResource("1_wijl4")
 
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(619, 321)
+enabled = false
+position_smoothing_enabled = true
+position_smoothing_speed = 3.0
+script = ExtResource("2_gldc4")
+
 [node name="Player" parent="." instance=ExtResource("1_c7s6e")]
-position = Vector2(578, 375)
+position = Vector2(619, 320)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(315, 591)
+position = Vector2(16, 553)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(0, -0.5)
